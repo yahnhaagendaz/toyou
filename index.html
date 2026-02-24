@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>给思雨的一封信</title>
+    
+    <!-- 引入唯美花体字库：英文 Great Vibes，中文 Long Cang (龙藏行书) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Long+Cang&display=swap" rel="stylesheet">
+
+    <style>
+        /* 全局重置与暗黑背景 */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            -webkit-tap-highlight-color: transparent;
+        }
+        
+        body {
+            background-color: #030305; /* 极暗的深空色 */
+            color: #e0e4ec;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* ---------------- 高级代码雨滴动画 ---------------- */
+        #rain-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none; 
+            z-index: 1;
+        }
+        .drop {
+            position: absolute;
+            background: linear-gradient(to bottom, rgba(255,255,255,0), rgba(255,255,255,0.6));
+            width: 1px;
+            height: 80px;
+            top: -100px;
+            animation: fall linear infinite;
+        }
+        @keyframes fall {
+            to { transform: translateY(120vh); }
+        }
+
+        /* ---------------- 初始交互：呼吸光晕 ---------------- */
+        #intro {
+            position: absolute;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: opacity 1.5s ease, transform 1.5s ease;
+        }
+        
+        .glow-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.03);
+            box-shadow: 0 0 20px rgba(255, 255, 255, 0.15), 
+                        inset 0 0 10px rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            animation: breathe 3s infinite ease-in-out;
+        }
+
+        .glow-circle span {
+            font-family: sans-serif;
+            font-size: 12px;
+            color: rgba(255, 255, 255, 0.5);
+            letter-spacing: 1px;
+        }
+
+        .hint-text {
+            margin-top: 20px;
+            font-family: 'Great Vibes', 'Snell Roundhand', cursive;
+            font-size: 26px;
+            color: rgba(255, 255, 255, 0.6);
+            letter-spacing: 2px;
+            animation: breathe 3s infinite ease-in-out;
+            animation-delay: 0.5s;
+        }
+
+        @keyframes breathe {
+            0% { transform: scale(1); opacity: 0.6; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+            50% { transform: scale(1.05); opacity: 1; box-shadow: 0 0 30px rgba(255,255,255,0.3); }
+            100% { transform: scale(1); opacity: 0.6; box-shadow: 0 0 15px rgba(255,255,255,0.05); }
+        }
+
+        /* ---------------- 信纸：磨砂玻璃风 ---------------- */
+        #letter {
+            position: absolute;
+            top: 5vh;
+            width: 90%;
+            max-width: 450px;
+            height: 90vh;
+            background: rgba(15, 15, 20, 0.45);
+            -webkit-backdrop-filter: blur(15px);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: 16px;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.9);
+            
+            padding: 40px 25px 60px 25px;
+            overflow-y: auto;
+            z-index: 5;
+            
+            opacity: 0;
+            transform: translateY(30px) scale(0.95);
+            pointer-events: none;
+            transition: opacity 2s cubic-bezier(0.25, 0.8, 0.25, 1), 
+                        transform 2s cubic-bezier(0.25, 0.8, 0.25, 1);
+        }
+
+        #letter::-webkit-scrollbar { display: none; }
+
+        /* 中文花体排版 */
+        .content {
+            white-space: pre-wrap; 
+            /* 优先调用龙藏行书，后备苹果自带华文行楷 */
+            font-family: 'Long Cang', 'STXingkai', 'Xingkai SC', cursive;
+            font-size: 22px; /* 花体字比较柔美，稍微放大一点 */
+            line-height: 2.0;
+            letter-spacing: 2px; 
+            color: rgba(255, 255, 255, 0.85);
+            text-shadow: 0 0 8px rgba(255, 255, 255, 0.2); 
+        }
+
+        /* 英文特写花体 */
+        .opening {
+            font-family: 'Great Vibes', 'Zapfino', 'Snell Roundhand', cursive;
+            font-size: 38px;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.5);
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .english-focus {
+            font-family: 'Great Vibes', 'Zapfino', 'Snell Roundhand', cursive;
+            font-size: 30px;
+            color: #fff;
+            text-shadow: 0 0 15px rgba(255, 255, 255, 0.6);
+            display: block;
+            margin: 20px 0;
+            line-height: 1.5;
+        }
+
+        .emoji {
+            font-family: sans-serif;
+            font-size: 16px;
+            color: rgba(255,255,255,0.4);
+            letter-spacing: 0;
+        }
+
+        .show-letter {
+            opacity: 1 !important;
+            transform: translateY(0) scale(1) !important;
+            pointer-events: auto !important;
+        }
+        .hide-intro {
+            opacity: 0;
+            transform: scale(1.5);
+            pointer-events: none;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div id="rain-container"></div>
+
+    <div id="intro" onclick="openLetter()">
+        <div class="glow-circle"><span>Tap</span></div>
+        <div class="hint-text">Touch the rain</div>
+    </div>
+
+    <div id="letter">
+        <div class="content"><span class="opening">To Siyu,</span>
+亲爱的思雨
+
+也许是此刻，又或者是在睡眼惺忪的时候
+此刻。
+我由衷地希望
+能够通过文字再次能找到你。
+但愿
+看到这些文字的你，一切都好好的。
+工作开头就很忙碌，雨下了一天，让我总是会想起你。
+我。
+感受到你那种矛盾的心理再次涌上心头。
+
+2025，你的出现让我感到十分的幸运。你的陪伴，让我感受到被关心的爱。
+我
+   很珍惜我们之间的关系，无论是朋友还是更多，我都希望我们能够一直保持联系 
+一起分享日常平淡的日子。不管以后身在何方，我都想和你互相陪着，开心的事一起分享，难过的时候也能成为你的依靠。
+ 我的心意，我明白，
+ 那些话，这些话语好像束缚你的枷锁，我努力的想去调整去平衡  那些曾经让你感到不安的事情。
+
+
+天色暗沉已经有些时候
+    也许此时，我的文字出现的又不适宜。
+    笔在我手
+      我想探索回馈于你的力量。
+         由我爱的人赋予勇气
+         一起
+         解构这个被看穿的世界
+
+         迷途中的少女
+           在混乱中替苦难的身躯寻找回忆
+           即便几度以痛处亲吻肌肤
+           
+           此刻。
+              
+              仍是希望
+               能够陪伴你继续走下去。
+        
+
+    属于雨水的季节，即将在日历上翻过。
+       但思绪如雨，
+          我们的情绪不必强求它来去匆匆
+              一切都让它们自然经过。
+
+        <span class="english-focus">After all,
+            Not all the things must come to an end.</span>
+
+                
+        哈斯
+        2025.02.24 夜
+ <span class="emoji">(´・ ・`)</span></div>
+    </div>
+
+    <script>
+        function createRain() {
+            const container = document.getElementById('rain-container');
+            const rainCount = 70; 
+
+            for (let i = 0; i < rainCount; i++) {
+                let drop = document.createElement('div');
+                drop.classList.add('drop');
+                
+                drop.style.left = Math.random() * 100 + 'vw';
+                
+                let duration = Math.random() * 1.5 + 0.6;
+                drop.style.animationDuration = duration + 's';
+                
+                drop.style.animationDelay = Math.random() * 2 + 's';
+                
+                drop.style.opacity = Math.random() * 0.4 + 0.1;
+                
+                container.appendChild(drop);
+            }
+        }
+
+        createRain();
+
+        function openLetter() {
+            const intro = document.getElementById('intro');
+            const letter = document.getElementById('letter');
+
+            intro.classList.add('hide-intro');
+            
+            setTimeout(() => {
+                letter.classList.add('show-letter');
+            }, 800);
+        }
+    </script>
+</body>
+</html>
