@@ -242,7 +242,8 @@
  <span class="emoji">(´・ ・`)</span></div>
     </div>
 
-    <script>
+<script>
+        // 1. 生成代码雨滴动画
         function createRain() {
             const container = document.getElementById('rain-container');
             const rainCount = 70; 
@@ -250,28 +251,54 @@
             for (let i = 0; i < rainCount; i++) {
                 let drop = document.createElement('div');
                 drop.classList.add('drop');
-                
                 drop.style.left = Math.random() * 100 + 'vw';
-                
                 let duration = Math.random() * 1.5 + 0.6;
                 drop.style.animationDuration = duration + 's';
-                
                 drop.style.animationDelay = Math.random() * 2 + 's';
-                
                 drop.style.opacity = Math.random() * 0.4 + 0.1;
-                
                 container.appendChild(drop);
             }
         }
-
         createRain();
 
+        // 2. 准备音频对象 (读取你 GitHub 里的 rain.mp3)
+        const rainSound = new Audio('rain.mp3');
+        rainSound.loop = true;  // 设置循环播放
+        rainSound.volume = 0;   // 初始音量设为0，为了后面的淡入效果
+
+        // 3. 声音淡入函数 (像电影一样缓缓变大声)
+        function fadeAudioIn(audio, targetVolume, duration) {
+            const steps = 20; // 渐变的次数
+            const stepTime = duration / steps;
+            const volumeStep = targetVolume / steps;
+            
+            let currentStep = 0;
+            const fadeInterval = setInterval(() => {
+                currentStep++;
+                audio.volume = Math.min(volumeStep * currentStep, targetVolume);
+                if (currentStep >= steps) {
+                    clearInterval(fadeInterval);
+                }
+            }, stepTime);
+        }
+
+        // 4. 点击交互逻辑
         function openLetter() {
             const intro = document.getElementById('intro');
             const letter = document.getElementById('letter');
 
+            // 隐藏初始界面
             intro.classList.add('hide-intro');
             
+            // 播放雨声并执行淡入 (目标音量0.6，用时2秒淡入)
+            // 注意：因为必须有用户点击才能播放，这里正好在 onclick 事件内
+            rainSound.play().then(() => {
+                fadeAudioIn(rainSound, 0.6, 2000); 
+            }).catch((error) => {
+                console.log("浏览器限制了自动播放或找不到文件:", error);
+            });
+            
+            // 延迟0.8秒后，信件如幽灵般浮现
             setTimeout(() => {
                 letter.classList.add('show-letter');
             }, 800);
